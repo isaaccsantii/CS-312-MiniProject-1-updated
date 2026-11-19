@@ -14,6 +14,16 @@ A blog built with **Node.js**, **Express.js** and **EJS**. Users can create, vie
 | Styling | Bootstrap 5 plus custom CSS. Two columns on desktop, stacked on mobile. |
 | **Bonus: categories** | Dropdown on the create and edit forms. A filter on the home page (`/?category=Tech`) and clickable category badges. |
 
+## Screenshots
+
+| Home: create form + feed | Edit page |
+|---|---|
+| ![Home](docs/screenshots/home.png) | ![Edit](docs/screenshots/edit.png) |
+| **Category filter (bonus)** | **Validation error** |
+| ![Filter](docs/screenshots/filter.png) | ![Validation](docs/screenshots/validation.png) |
+| **Mobile** | |
+| ![Mobile](docs/screenshots/mobile.png) | |
+
 ## Routes
 
 | Method | Path | Purpose |

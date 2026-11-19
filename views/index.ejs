@@ -1,0 +1,69 @@
+<%- include("partials/header") %>
+
+<div class="row g-4">
+  <!-- Create post -->
+  <section class="col-lg-5">
+    <div class="card shadow-sm sticky-lg-top" style="top: 1rem;">
+      <div class="card-body">
+        <h1 class="h4 card-title mb-3">New post</h1>
+        <% if (error) { %>
+          <div class="alert alert-danger py-2"><%= error %></div>
+        <% } %>
+        <form action="/posts" method="POST">
+          <%- include("partials/postForm", { values: form }) %>
+          <button type="submit" class="btn btn-brand w-100 mt-3">Publish</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Post feed -->
+  <section class="col-lg-7">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <h2 class="h4 mb-0">Posts <span class="badge text-bg-secondary"><%= posts.length %></span></h2>
+
+      <!-- Category filter (bonus) -->
+      <form action="/" method="GET" class="d-flex gap-2 align-items-center">
+        <label for="filter" class="small text-muted">Show</label>
+        <select id="filter" name="category" class="form-select form-select-sm" onchange="this.form.submit()">
+          <option value="All" <%= selected === 'All' ? 'selected' : '' %>>All categories</option>
+          <% categories.forEach(c => { %>
+            <option value="<%= c %>" <%= selected === c ? 'selected' : '' %>><%= c %></option>
+          <% }) %>
+        </select>
+        <noscript><button class="btn btn-sm btn-outline-secondary">Filter</button></noscript>
+      </form>
+    </div>
+
+    <% if (posts.length === 0) { %>
+      <div class="empty-state text-center p-5 rounded">
+        <p class="mb-0"><%= selected === 'All' ? 'No posts yet. Write the first one!' : `No ${selected} posts yet.` %></p>
+      </div>
+    <% } %>
+
+    <% posts.forEach(post => { %>
+      <article class="card post-card shadow-sm mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <h3 class="h5 card-title mb-1"><%= post.title %></h3>
+            <a href="/?category=<%= post.category %>" class="badge rounded-pill cat-badge text-decoration-none"><%= post.category %></a>
+          </div>
+          <p class="text-muted small mb-2">
+            By <strong><%= post.author %></strong> &middot; <%= formatDate(post.createdAt) %>
+            <% if (post.updatedAt) { %> &middot; <em>edited <%= formatDate(post.updatedAt) %></em><% } %>
+          </p>
+          <p class="card-text post-body"><%= post.content %></p>
+          <div class="d-flex gap-2">
+            <a href="/posts/<%= post.id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+            <form action="/posts/<%= post.id %>/delete" method="POST"
+                  onsubmit="return confirm('Delete this post?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      </article>
+    <% }) %>
+  </section>
+</div>
+
+<%- include("partials/footer") %>
